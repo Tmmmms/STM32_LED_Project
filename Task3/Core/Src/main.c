@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -43,7 +44,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+volatile uint8_t debounce_busy = 0;
+volatile uint8_t key_pressed = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -86,6 +88,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -141,6 +144,36 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin == GPIO_PIN_1 && debounce_busy == 0)
+	{
+		debounce_busy = 1;
+		__HAL_TIM_CLEAR_FLAG(&htim1, TIM_FLAG_UPDATE);
+		__HAL_TIM_SET_COUNTER(&htim1, 0);
+		HAL_TIM_Base_Start_IT(&htim1);
+	}
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if(htim->Instance == TIM1)
+	{
+		HAL_TIM_Base_Stop_IT(&htim1);
+		debounce_busy = 0;
+		GPIO_PinState Pstate = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1);
+		if(Pstate == GPIO_PIN_RESET && key_pressed == 0)
+		{
+			key_pressed = 1;
+			HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
+		}
+		else if(Pstate == GPIO_PIN_SET && key_pressed == 1)
+		{
+			key_pressed = 0;
+		}
+	}
+}
 
 /* USER CODE END 4 */
 
