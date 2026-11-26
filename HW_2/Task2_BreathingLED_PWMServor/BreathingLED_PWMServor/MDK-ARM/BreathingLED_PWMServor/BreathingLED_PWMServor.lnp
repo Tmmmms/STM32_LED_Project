@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"breathingled_pwmservor\startup_stm32f103xb.o"
+"breathingled_pwmservor\main.o"
+"breathingled_pwmservor\gpio.o"
+"breathingled_pwmservor\tim.o"
+"breathingled_pwmservor\stm32f1xx_it.o"
+"breathingled_pwmservor\stm32f1xx_hal_msp.o"
+"breathingled_pwmservor\stm32f1xx_hal_gpio_ex.o"
+"breathingled_pwmservor\stm32f1xx_hal_tim.o"
+"breathingled_pwmservor\stm32f1xx_hal_tim_ex.o"
+"breathingled_pwmservor\stm32f1xx_hal.o"
+"breathingled_pwmservor\stm32f1xx_hal_rcc.o"
+"breathingled_pwmservor\stm32f1xx_hal_rcc_ex.o"
+"breathingled_pwmservor\stm32f1xx_hal_gpio.o"
+"breathingled_pwmservor\stm32f1xx_hal_dma.o"
+"breathingled_pwmservor\stm32f1xx_hal_cortex.o"
+"breathingled_pwmservor\stm32f1xx_hal_pwr.o"
+"breathingled_pwmservor\stm32f1xx_hal_flash.o"
+"breathingled_pwmservor\stm32f1xx_hal_flash_ex.o"
+"breathingled_pwmservor\stm32f1xx_hal_exti.o"
+"breathingled_pwmservor\system_stm32f1xx.o"
+--strict --scatter "BreathingLED_PWMServor\BreathingLED_PWMServor.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "BreathingLED_PWMServor.map" -o BreathingLED_PWMServor\BreathingLED_PWMServor.axf
